@@ -41,7 +41,7 @@ function set_flash_message($message, $style = "danger") {
 function display_flash_message() {
      if (isset($_SESSION["message"])): echo <<<HTML
         <div class="alert alert-$_SESSION[style] text-dark" role="alert">
-            $_SESSION[message];
+            $_SESSION[message]
         </div>
 HTML;
          unset($_SESSION['message']);
@@ -196,4 +196,24 @@ function set_current_id($id) {
 
 function get_current_id() {
     return $_SESSION['user']['id_edit_user'];
+}
+
+function get_credentials_by_id($id) {
+    $pdo = connect_db();
+    $query = $pdo->prepare("SELECT * FROM users WHERE id=$id");
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function edit_credentials($id, $email, $password) {
+    $pdo = connect_db();
+    if ($password){
+        $query = $pdo->prepare("UPDATE users SET email=:email, pass=:pass WHERE id=$id");
+        $query->execute(['email'=>$email, "pass"=>$password]);
+    } else {
+        $query = $pdo->prepare("UPDATE users SET email=:email WHERE id=$id");
+        $query->execute(['email'=>$email]);
+    }
+    $query = $pdo->prepare("UPDATE info SET email=:email WHERE id=$id");
+    $query->execute(['email'=>$email]);
 }

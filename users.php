@@ -98,13 +98,13 @@
                                                     <a class="dropdown-item" href="edit.php?id=<?=$item['id']?>">
                                                         <i class="fa fa-edit"></i>
                                                         Редактировать</a>
-                                                    <a class="dropdown-item" href="security?id=<?=$item['id']?>">
+                                                    <a class="dropdown-item" href="security.php?id=<?=$item['id']?>">
                                                         <i class="fa fa-lock"></i>
                                                         Безопасность</a>
-                                                    <a class="dropdown-item" href="status?id=<?=$item['id']?>">
+                                                    <a class="dropdown-item" href="status.php?id=<?=$item['id']?>">
                                                         <i class="fa fa-sun"></i>
                                                         Установить статус</a>
-                                                    <a class="dropdown-item" href="media?id=<?=$item['id']?>">
+                                                    <a class="dropdown-item" href="media.php?id=<?=$item['id']?>">
                                                         <i class="fa fa-camera"></i>
                                                         Загрузить аватар
                                                     </a>

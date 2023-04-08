@@ -9,17 +9,13 @@ if(is_not_logged_in()) {
 
 set_current_id($_GET['id']);
 
-if(is_admin(get_auth_user())) {
+if((is_admin(get_auth_user())) or (is_author(get_current_id()))) {
     $res = get_user_by_id(get_current_id());
 } else {
-    if(is_author(get_current_id())) {
-        $res = get_user_by_id(get_current_id());
-    }
-    else {
         set_flash_message("Можно редактировать только свой профиль!");
         redirectTo("users");
-    }
 }
+
 
 ?>
 <!DOCTYPE html>

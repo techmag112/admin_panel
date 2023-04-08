@@ -1,5 +1,24 @@
 <?php
 
+require "functions.php";
+
+check_session();
+
+if(is_not_logged_in()) {
+    redirectTo("page_login");
+}
+
+if(isset($_GET['id']))
+        set_current_id($_GET['id']);
+
+if((is_admin(get_auth_user())) or (is_author(get_current_id()))) {
+        $res = get_credentials_by_id(get_current_id());
+} else {
+        set_flash_message("Можно редактировать только свой профиль!");
+        redirectTo("users");
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +40,7 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -41,7 +60,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="security_action.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -53,24 +72,24 @@
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="john@example.com">
+                                    <input type="text" name="email" id="simpleinput" class="form-control" value="<?=htmlspecialchars($res['email'])?>">
                                 </div>
 
                                 <!-- password -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <input type="password" name="password" id="simpleinput" class="form-control" value="**********">
                                 </div>
 
                                 <!-- password confirmation-->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Подтверждение пароля</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <input type="password" name="password2" id="simpleinput" class="form-control" value="">
                                 </div>
 
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Изменить</button>
+                                    <button type="submit" class="btn btn-warning">Изменить</button>
                                 </div>
                             </div>
                         </div>
