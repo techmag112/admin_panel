@@ -191,7 +191,8 @@ function get_user_by_id($id) {
 }
 
 function set_current_id($id) {
-    $_SESSION['user'] += ['id_edit_user'=>$id];
+    //$_SESSION['user'] += ['id_edit_user' => $id];
+    $_SESSION['user'] = array_merge($_SESSION['user'], ['id_edit_user' => $id]);
 }
 
 function get_current_id() {
