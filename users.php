@@ -40,12 +40,15 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="page_login.php">Войти</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Выйти</a>
-                    </li>
+                    <?php if(is_not_logged_in()): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="page_login.php">Войти</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">Выйти</a>
+                        </li>
+                    <?php endif; ?>        
                 </ul>
             </div>
         </nav>
@@ -108,7 +111,7 @@
                                                         <i class="fa fa-camera"></i>
                                                         Загрузить аватар
                                                     </a>
-                                                    <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                                    <a href="delete.php?id=<?=$item['id']?>" class="dropdown-item" onclick="return confirm('Вы уверены?');">
                                                         <i class="fa fa-window-close"></i>
                                                         Удалить
                                                     </a>

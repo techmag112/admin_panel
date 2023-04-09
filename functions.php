@@ -138,7 +138,6 @@ function add_social_links($id, $vk, $telegram, $instagram) {
 }
 
 function upload_new_avatar($id, $file) {
-    $uploaddir = '/task2/img/demo/avatars/';
     $pdo = connect_db();
     // Upload new file avatar
     $name = upload_file($file);
@@ -146,15 +145,15 @@ function upload_new_avatar($id, $file) {
     $query->execute(['image'=>$name]);      
 }
 
-function delete_old_avatar($id, $file) {
-    $uploaddir = '/task2/img/demo/avatars/';
+function delete_old_avatar($id) {
+    $uploaddir = $_SERVER['DOCUMENT_ROOT'] . '/task2/img/demo/avatars/';
     $pdo = connect_db();
     // Delete old file avatar
     $query = $pdo->prepare("SELECT image FROM info WHERE id = ?");
     $query->execute([$id]);
     $oldFile = $query->fetch(PDO::FETCH_ASSOC);
-    if(!empty($oldFile) and (file_exists($uploaddir . $file["image"]))) {
-        unlink($uploaddir . $file["image"]);
+    if(!empty($oldFile) and (file_exists($uploaddir . $oldFile['image']))) {
+        unlink($uploaddir . $oldFile['image']);
     }
 }
 
@@ -170,15 +169,14 @@ function is_image($file){
   }
   
 function upload_file($file){	
-    $uploaddir = '/task2/img/demo/avatars/';
+    $uploaddir = $_SERVER['DOCUMENT_ROOT'] . '/task2/img/demo/avatars/';
 	$name = uniqid() . $file['name'];
-	move_uploaded_file( $file['tmp_name'],  $_SERVER["DOCUMENT_ROOT"] . $uploaddir . $name);
+	move_uploaded_file($file['tmp_name'],  $uploaddir . $name);
 	return $name;
   }
 
 function is_author($current_user_id) {
     $logged_user_id = get_auth_user();
-    $tmp = $logged_user_id['id'];
     if($logged_user_id['id'] == $current_user_id) 
         return true;
 }
@@ -217,4 +215,16 @@ function edit_credentials($id, $email, $password) {
     }
     $query = $pdo->prepare("UPDATE info SET email=:email WHERE id=$id");
     $query->execute(['email'=>$email]);
+}
+
+function delete_user($id) {
+    $pdo = connect_db();
+    $query = $pdo->prepare("DELETE FROM users WHERE id=$id");
+    $query->execute();
+    delete_old_avatar($id);
+    $query = $pdo->prepare("DELETE FROM info WHERE id=$id");
+    $query->execute();
+    set_flash_message("Пользователь успешно удален.", "success");
+    if(is_author($id)) 
+            return true;
 }

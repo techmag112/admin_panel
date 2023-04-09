@@ -12,7 +12,7 @@ if (get_user_by_email($email, "create_user")) {
     edit_info(get_current_id(), $username, $job_title, $phone, $email, $address);
     set_status(get_current_id(), $status);
     if(is_image($_FILES['image'])) {
-        delete_old_avatar(get_current_id(), $_FILES['image']);
+        delete_old_avatar(get_current_id());
         upload_new_avatar(get_current_id(), $_FILES['image']);
     }
     add_social_links(get_current_id(), $vk, $telegram, $instagram);
